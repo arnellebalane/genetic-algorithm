@@ -57,7 +57,6 @@ public class GeneticAlgorithm {
 
     int generation = 0;
     while (generation++ < maxGenerations && !solutionFound(population)) {
-      population = rankPopulation(population);
       Individual[] survivors = survivorSelector.select(population, survivalRate);
       Individual[] parents = parentSelector.select(population);
       Individual[] offsprings = recombinator.recombine(parents, crossoverProbability, population.length - survivors.length);
