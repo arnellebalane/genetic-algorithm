@@ -19,8 +19,8 @@ public class GeneticAlgorithm {
     populationSize = 10;
     maxGenerations = 500000;
     survivalRate = 0.1;
-    crossoverProbability = 0.2;
-    mutationProbability = 0.2;
+    crossoverProbability = 0.5;
+    mutationProbability = 0.5;
   }
 
   public GeneticAlgorithm(int populationSize, int maxGenerations, double survivalRate, double crossoverProbability, double mutationProbability) {
@@ -54,9 +54,14 @@ public class GeneticAlgorithm {
   public Individual solve(String puzzlePath) {
     Individual puzzle = puzzleParser.parse(puzzlePath);
     population = initializePopulation(puzzle);
-
     int generation = 0;
     while (generation++ < maxGenerations && !solutionFound(population)) {
+      population = rankPopulation(population);
+      System.out.print(generation + " :");
+      for (int i = 0; i < population.length; i++) {
+        System.out.print(" " + population[i].getFitness());
+      }
+      System.out.println();
       Individual[] survivors = survivorSelector.select(population, survivalRate);
       Individual[] parents = parentSelector.select(population);
       Individual[] offsprings = recombine(parents, population.length - survivors.length);
@@ -82,7 +87,7 @@ public class GeneticAlgorithm {
     while (!sorted) {
       sorted = true;
       for (int i = 0; i < individuals.length - 1; i++) {
-        if (individuals[i].getFitness() < individuals[i].getFitness()) {
+        if (individuals[i].getFitness() < individuals[i + 1].getFitness()) {
           sorted = false;
           Individual temp = individuals[i];
           individuals[i] = individuals[i + 1];
@@ -99,7 +104,7 @@ public class GeneticAlgorithm {
       double probabilityOfCrossover = Math.random();
       Individual parent1 = parents[(int) (Math.random() * parents.length)];
       Individual parent2 = parents[(int) (Math.random() * parents.length)];
-      Individual[] children = null;
+      Individual[] children = new Individual[2];
       if (probabilityOfCrossover <= crossoverProbability) {
         children = recombinator.recombine(parent1, parent2);
       } else {

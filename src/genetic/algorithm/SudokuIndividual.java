@@ -39,7 +39,7 @@ public class SudokuIndividual implements Individual {
 
   @Override
   public void setAllele(int index, int data) {
-    alleles[(int) (index / puzzleDimension)][index % puzzleDimension].setData(data);
+    getAllele(index).setData(data);
   }
 
   @Override
@@ -64,6 +64,7 @@ public class SudokuIndividual implements Individual {
       for (int i = 0; i < puzzleDimension; i++) {
         fitness += evaluateFitness(getRow(i)) + evaluateFitness(getColumn(i)) + evaluateFitness(getBlock(i));
       }
+      fitness *= -1;
     }
     return fitness;
   }
@@ -71,16 +72,17 @@ public class SudokuIndividual implements Individual {
   @Override
   public Individual clone() {
     Individual clone = new SudokuIndividual(puzzleDimension);
-    for (int i = 0; i < puzzleDimension * puzzleDimension; i++) {
-      clone.addAllele(i, alleles[(int) (i / puzzleDimension)][i % puzzleDimension].getData());
+    for (int i = 0; i < countAlleles(); i++) {
+      clone.addAllele(i, getAllele(i).getData());
+      ((SudokuAllele) clone.getAllele(i)).setChangeable(((SudokuAllele) getAllele(i)).getChangeable());
     }
     return clone;
   }
 
   @Override
   public void randomize() {
-    for (int i = 0; i < puzzleDimension * puzzleDimension; i++) {
-      alleles[(int) (i / puzzleDimension)][i % puzzleDimension].setData(randomAllele().getData());
+    for (int i = 0; i < countAlleles(); i++) {
+      getAllele(i).setData(randomAllele().getData());
     }
   }
 
@@ -133,6 +135,15 @@ public class SudokuIndividual implements Individual {
     String str = "";
     for (int i = 0; i < countAlleles(); i++) {
       str += getAllele(i).toString() + " ";
+      if (i % boardScheme[0] == boardScheme[0] - 1) {
+        str += "  ";
+      }
+      if (i % puzzleDimension == puzzleDimension - 1) {
+        str += "\n";
+      }
+      if ((int) (i / puzzleDimension) % boardScheme[1] == boardScheme[1] - 1 && i % puzzleDimension == puzzleDimension - 1) {
+        str += "\n";
+      }
     }
     return str.trim();
   }

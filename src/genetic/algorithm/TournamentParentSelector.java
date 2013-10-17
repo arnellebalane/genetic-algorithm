@@ -14,9 +14,10 @@ public class TournamentParentSelector implements ParentSelector {
     for (int i = 0; i < parents.length; i++) {
       Individual[] kGroup = new Individual[k];
       for (int j = 0; j < kGroup.length; j++) {
-        kGroup = rank(kGroup);
-        parents[i] = kGroup[0];
+        kGroup[j] = population[(int) (Math.random() * population.length)];
       }
+      kGroup = rank(kGroup);
+      parents[i] = kGroup[0];
     }
     return parents;
   }
@@ -26,7 +27,7 @@ public class TournamentParentSelector implements ParentSelector {
     while (!sorted) {
       sorted = true;
       for (int i = 0; i < individuals.length - 1; i++) {
-        if (individuals[i].getFitness() < individuals[i].getFitness()) {
+        if (individuals[i].getFitness() < individuals[i + 1].getFitness()) {
           sorted = false;
           Individual temp = individuals[i];
           individuals[i] = individuals[i + 1];

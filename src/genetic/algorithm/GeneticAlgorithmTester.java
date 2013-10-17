@@ -7,7 +7,10 @@ public class GeneticAlgorithmTester {
     sudoku.setPuzzleParser(new SudokuPuzzleParser());
     sudoku.setSurvivorSelector(new ElitismSurvivorSelector());
     sudoku.setParentSelector(new TournamentParentSelector(3));
-    sudoku.setRecombinator(new nPointCrossoverRecombinator(2));
+    sudoku.setRecombinator(new nPointCrossoverRecombinator(3));
     sudoku.setMutator(new RandomResettingMutator());
+
+    Individual solution = sudoku.solve("inputs/test.in");
+    System.out.println(solution);
   }
 }

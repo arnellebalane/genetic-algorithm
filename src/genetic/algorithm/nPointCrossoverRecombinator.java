@@ -10,8 +10,8 @@ public class nPointCrossoverRecombinator implements Recombinator {
 
   @Override
   public Individual[] recombine(Individual parent1, Individual parent2) {
-    Individual[] offsprings = new Individual[2];
-    Individual[] parents = {parent1.clone(), parent2.clone()};
+    Individual[] parents = {parent1, parent2};
+    Individual[] offsprings = {parent1.clone(), parent2.clone()};
     int[] breakPoints = initializeBreakPoints(parent1.countAlleles());
     int breakPointIndex = 0;
     int toggler = 0;
@@ -23,7 +23,6 @@ public class nPointCrossoverRecombinator implements Recombinator {
       offsprings[0].setAllele(i, parents[toggler].getAllele(i).getData());
       offsprings[1].setAllele(i, parents[(toggler + 1) % 2].getAllele(i).getData());
     }
-
     return offsprings;
   }
 

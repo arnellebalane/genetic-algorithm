@@ -16,7 +16,7 @@ public class ElitismSurvivorSelector implements SurvivorSelector {
     while (!sorted) {
       sorted = true;
       for (int i = 0; i < individuals.length - 1; i++) {
-        if (individuals[i].getFitness() < individuals[i].getFitness()) {
+        if (individuals[i].getFitness() < individuals[i + 1].getFitness()) {
           sorted = false;
           Individual temp = individuals[i];
           individuals[i] = individuals[i + 1];

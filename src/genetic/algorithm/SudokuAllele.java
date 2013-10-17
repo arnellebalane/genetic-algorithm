@@ -20,6 +20,14 @@ public class SudokuAllele implements Allele {
     return data;
   }
 
+  public boolean getChangeable() {
+    return changeable;
+  }
+
+  public void setChangeable(boolean changeable) {
+    this.changeable = changeable;
+  }
+
   @Override
   public String toString() {
     return "" + data;
