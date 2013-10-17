@@ -6,6 +6,7 @@ public class SudokuIndividual implements Individual {
   private int[] boardScheme;
   private Allele[][] alleles;
   private int fitness;
+  private int[] possibleAlleles;
 
   public SudokuIndividual(int puzzleDimension) {
     this.puzzleDimension = puzzleDimension;
@@ -25,6 +26,10 @@ public class SudokuIndividual implements Individual {
       boardScheme[0] = 3;
       boardScheme[1] = 3;
     }
+    possibleAlleles = new int[9];
+    for (int i = 0; i < possibleAlleles.length; i++) {
+      possibleAlleles[i] = i + 1;
+    }
   }
 
   @Override
@@ -40,6 +45,11 @@ public class SudokuIndividual implements Individual {
   @Override
   public Allele getAllele(int index) {
     return alleles[(int) (index / puzzleDimension)][index % puzzleDimension];
+  }
+
+  @Override
+  public Allele randomAllele() {
+    return new SudokuAllele(possibleAlleles[(int) (Math.random() * possibleAlleles.length)], true);
   }
 
   @Override
@@ -70,7 +80,7 @@ public class SudokuIndividual implements Individual {
   @Override
   public void randomize() {
     for (int i = 0; i < puzzleDimension * puzzleDimension; i++) {
-      alleles[(int) (i / puzzleDimension)][i % puzzleDimension].setData((int) (Math.random() * puzzleDimension + 1));
+      alleles[(int) (i / puzzleDimension)][i % puzzleDimension].setData(randomAllele().getData());
     }
   }
 
@@ -116,5 +126,14 @@ public class SudokuIndividual implements Individual {
       }
     }
     return missingAlleles;
+  }
+
+  @Override
+  public String toString() {
+    String str = "";
+    for (int i = 0; i < countAlleles(); i++) {
+      str += getAllele(i).toString() + " ";
+    }
+    return str.trim();
   }
 }

@@ -62,7 +62,7 @@ public class GeneticAlgorithm {
       Individual[] offsprings = recombine(parents, population.length - survivors.length);
       System.arraycopy(survivors, 0, population, 0, survivors.length);
       System.arraycopy(offsprings, 0, population, survivors.length, offsprings.length);
-      population = mutator.mutate(population, mutationProbability);
+      population = mutate(population);
     }
     population = rankPopulation(population);
     return population[0];
@@ -96,15 +96,32 @@ public class GeneticAlgorithm {
   private Individual[] recombine(Individual[] parents, int offspingCount) {
     Individual[] offsprings = new Individual[offspingCount];
     for (int i = 0; i < offsprings.length; i += 2) {
+      double probabilityOfCrossover = Math.random();
       Individual parent1 = parents[(int) (Math.random() * parents.length)];
       Individual parent2 = parents[(int) (Math.random() * parents.length)];
-      Individual[] children = recombinator.recombine(parent1, parent2);
+      Individual[] children = null;
+      if (probabilityOfCrossover <= crossoverProbability) {
+        children = recombinator.recombine(parent1, parent2);
+      } else {
+        children[0] = parent1;
+        children[1] = parent2;
+      }
       offsprings[i] = children[0];
       if (i < offsprings.length - 1) {
         offsprings[i + 1] = children[1];
       }
     }
     return offsprings;
+  }
+
+  private Individual[] mutate(Individual[] population) {
+    for (int i = 0; i < population.length; i++) {
+      double probabilityOfMutation = Math.random();
+      if (probabilityOfMutation <= mutationProbability) {
+        population[i] = mutator.mutate(population[i]);
+      }
+    }
+    return population;
   }
 
   private boolean solutionFound(Individual[] individuals) {

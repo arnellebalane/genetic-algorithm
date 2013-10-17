@@ -2,21 +2,26 @@
 package genetic.algorithm;
 
 public class SudokuAllele implements Allele {
-  private int value;
+  private int data;
   private boolean changeable;
 
-  public SudokuAllele(int value, boolean changeable) {
-    this.value = value;
+  public SudokuAllele(int data, boolean changeable) {
+    this.data = data;
     this.changeable = changeable;
   }
 
   @Override
-  public void setData(int value) {
-    this.value = (changeable) ? value : this.value;
+  public void setData(int data) {
+    this.data = (changeable) ? data : this.data;
   }
 
   @Override
   public int getData() {
-    return value;
+    return data;
+  }
+
+  @Override
+  public String toString() {
+    return "" + data;
   }
 }

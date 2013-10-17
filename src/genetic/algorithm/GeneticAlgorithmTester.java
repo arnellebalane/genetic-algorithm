@@ -8,5 +8,6 @@ public class GeneticAlgorithmTester {
     sudoku.setSurvivorSelector(new ElitismSurvivorSelector());
     sudoku.setParentSelector(new TournamentParentSelector(3));
     sudoku.setRecombinator(new nPointCrossoverRecombinator(2));
+    sudoku.setMutator(new RandomResettingMutator());
   }
 }
