@@ -6,5 +6,7 @@ public class GeneticAlgorithmTester {
     GeneticAlgorithm sudoku = new GeneticAlgorithm();
     sudoku.setPuzzleParser(new SudokuPuzzleParser());
     sudoku.setSurvivorSelector(new ElitismSurvivorSelector());
+    sudoku.setParentSelector(new TournamentParentSelector(3));
+    sudoku.setRecombinator(new nPointCrossoverRecombinator(2));
   }
 }

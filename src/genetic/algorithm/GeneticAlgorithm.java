@@ -59,7 +59,7 @@ public class GeneticAlgorithm {
     while (generation++ < maxGenerations && !solutionFound(population)) {
       Individual[] survivors = survivorSelector.select(population, survivalRate);
       Individual[] parents = parentSelector.select(population);
-      Individual[] offsprings = recombinator.recombine(parents, crossoverProbability, population.length - survivors.length);
+      Individual[] offsprings = recombine(parents, population.length - survivors.length);
       System.arraycopy(survivors, 0, population, 0, survivors.length);
       System.arraycopy(offsprings, 0, population, survivors.length, offsprings.length);
       population = mutator.mutate(population, mutationProbability);
@@ -91,6 +91,20 @@ public class GeneticAlgorithm {
       }
     }
     return individuals;
+  }
+
+  private Individual[] recombine(Individual[] parents, int offspingCount) {
+    Individual[] offsprings = new Individual[offspingCount];
+    for (int i = 0; i < offsprings.length; i += 2) {
+      Individual parent1 = parents[(int) (Math.random() * parents.length)];
+      Individual parent2 = parents[(int) (Math.random() * parents.length)];
+      Individual[] children = recombinator.recombine(parent1, parent2);
+      offsprings[i] = children[0];
+      if (i < offsprings.length - 1) {
+        offsprings[i + 1] = children[1];
+      }
+    }
+    return offsprings;
   }
 
   private boolean solutionFound(Individual[] individuals) {

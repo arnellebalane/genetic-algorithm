@@ -1,14 +1,24 @@
 
 package genetic.algorithm;
 
-public class ElitismSurvivorSelector implements SurvivorSelector {
+public class TournamentParentSelector implements ParentSelector {
+  private int k;
+
+  public TournamentParentSelector(int k) {
+    this.k = k;
+  }
 
   @Override
-  public Individual[] select(Individual[] population, double survivalRate) {
-    Individual[] survivors = new Individual[(int) (population.length * survivalRate)];
-    population = rank(population);
-    System.arraycopy(population, 0, survivors, 0, survivors.length);
-    return survivors;
+  public Individual[] select(Individual[] population) {
+    Individual[] parents = new Individual[population.length];
+    for (int i = 0; i < parents.length; i++) {
+      Individual[] kGroup = new Individual[k];
+      for (int j = 0; j < kGroup.length; j++) {
+        kGroup = rank(kGroup);
+        parents[i] = kGroup[0];
+      }
+    }
+    return parents;
   }
 
   private Individual[] rank(Individual[] individuals) {

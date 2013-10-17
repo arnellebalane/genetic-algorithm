@@ -5,6 +5,7 @@ public interface Individual {
   public void addAllele(int index, int data);
   public void setAllele(int index, int data);
   public Allele getAllele(int index);
+  public int countAlleles();
   public int getFitness();
   public Individual clone();
   public void randomize();

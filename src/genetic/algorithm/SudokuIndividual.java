@@ -43,6 +43,11 @@ public class SudokuIndividual implements Individual {
   }
 
   @Override
+  public int countAlleles() {
+    return puzzleDimension * puzzleDimension;
+  }
+
+  @Override
   public int getFitness() {
     if (fitness == 1) {
       fitness = 0;
