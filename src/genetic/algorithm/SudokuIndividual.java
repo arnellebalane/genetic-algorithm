@@ -26,7 +26,7 @@ public class SudokuIndividual implements Individual {
       boardScheme[0] = 3;
       boardScheme[1] = 3;
     }
-    possibleAlleles = new int[9];
+    possibleAlleles = new int[puzzleDimension];
     for (int i = 0; i < possibleAlleles.length; i++) {
       possibleAlleles[i] = i + 1;
     }

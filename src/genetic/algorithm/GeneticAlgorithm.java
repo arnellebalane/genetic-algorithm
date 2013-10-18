@@ -7,7 +7,6 @@ public class GeneticAlgorithm {
   private double survivalRate;
   private double crossoverProbability;
   private double mutationProbability;
-  private Individual[] population;
 
   private PuzzleParser puzzleParser;
   private SurvivorSelector survivorSelector;
@@ -17,10 +16,10 @@ public class GeneticAlgorithm {
 
   public GeneticAlgorithm() {
     populationSize = 10;
-    maxGenerations = 500000;
-    survivalRate = 0.1;
-    crossoverProbability = 0.5;
-    mutationProbability = 0.5;
+    maxGenerations = 5000;
+    survivalRate = 0.5;
+    crossoverProbability = 1.0;
+    mutationProbability = 1.0;
   }
 
   public GeneticAlgorithm(int populationSize, int maxGenerations, double survivalRate, double crossoverProbability, double mutationProbability) {
@@ -53,15 +52,17 @@ public class GeneticAlgorithm {
 
   public Individual solve(String puzzlePath) {
     Individual puzzle = puzzleParser.parse(puzzlePath);
-    population = initializePopulation(puzzle);
+    Individual[] population = initializePopulation(puzzle);
     int generation = 0;
     while (generation++ < maxGenerations && !solutionFound(population)) {
       population = rankPopulation(population);
+
       System.out.print(generation + " :");
       for (int i = 0; i < population.length; i++) {
         System.out.print(" " + population[i].getFitness());
       }
       System.out.println();
+
       Individual[] survivors = survivorSelector.select(population, survivalRate);
       Individual[] parents = parentSelector.select(population);
       Individual[] offsprings = recombine(parents, population.length - survivors.length);

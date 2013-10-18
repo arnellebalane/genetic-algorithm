@@ -10,7 +10,7 @@ public class GeneticAlgorithmTester {
     sudoku.setRecombinator(new nPointCrossoverRecombinator(3));
     sudoku.setMutator(new RandomResettingMutator());
 
-    Individual solution = sudoku.solve("inputs/test.in");
+    Individual solution = sudoku.solve("inputs/sudoku9_01.in");
     System.out.println(solution);
   }
 }
