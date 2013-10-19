@@ -7,6 +7,7 @@ public interface Individual {
   public Allele getAllele(int index);
   public Allele randomAllele();
   public int countAlleles();
+  public void evaluateFitness();
   public int getFitness();
   public Individual clone();
   public void randomize();

@@ -16,8 +16,8 @@ public class GeneticAlgorithm {
 
   public GeneticAlgorithm() {
     populationSize = 10;
-    maxGenerations = 5000;
-    survivalRate = 0.5;
+    maxGenerations = 5000000;
+    survivalRate = 0.1;
     crossoverProbability = 1.0;
     mutationProbability = 1.0;
   }
@@ -55,6 +55,7 @@ public class GeneticAlgorithm {
     Individual[] population = initializePopulation(puzzle);
     int generation = 0;
     while (generation++ < maxGenerations && !solutionFound(population)) {
+      population = evaluateFitness(population);
       population = rankPopulation(population);
 
       System.out.print(generation + " :");
@@ -70,6 +71,7 @@ public class GeneticAlgorithm {
       System.arraycopy(offsprings, 0, population, survivors.length, offsprings.length);
       population = mutate(population);
     }
+    population = evaluateFitness(population);
     population = rankPopulation(population);
     return population[0];
   }
@@ -81,6 +83,13 @@ public class GeneticAlgorithm {
       individuals[i].randomize();
     }
     return individuals;
+  }
+
+  private Individual[] evaluateFitness(Individual[] population) {
+    for (int i = 0; i < population.length; i++) {
+      population[i].evaluateFitness();
+    }
+    return population;
   }
 
   private Individual[] rankPopulation(Individual[] individuals) {

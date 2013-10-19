@@ -58,14 +58,16 @@ public class SudokuIndividual implements Individual {
   }
 
   @Override
-  public int getFitness() {
-    if (fitness == 1) {
-      fitness = 0;
-      for (int i = 0; i < puzzleDimension; i++) {
-        fitness += evaluateFitness(getRow(i)) + evaluateFitness(getColumn(i)) + evaluateFitness(getBlock(i));
-      }
-      fitness *= -1;
+  public void evaluateFitness() {
+    fitness = 0;
+    for (int i = 0; i < puzzleDimension; i++) {
+      fitness += calculateFitness(getRow(i)) + calculateFitness(getColumn(i)) + calculateFitness(getBlock(i));
     }
+    fitness *= -1;
+  }
+
+  @Override
+  public int getFitness() {
     return fitness;
   }
 
@@ -114,7 +116,7 @@ public class SudokuIndividual implements Individual {
     return block;
   }
 
-  private int evaluateFitness(Allele[] data) {
+  private int calculateFitness(Allele[] data) {
     int missingAlleles = 0;
     for (int i = 1; i <= data.length; i++) {
       boolean present = false;
